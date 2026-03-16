@@ -34,12 +34,12 @@ def get_spaceships():
     return jsonify([s.to_dict()for s in spaceships]), 200
 
 ###добавляет новый корабль
-app.route('/api/v1/spaceships', methods=['POST'])
+@app.route('/api/v1/spaceships', methods=['POST'])
 def create_spaceship():
     data = request.get_json()
     required = ['spaceship_id', 'name', 'type']
     if not all(k in data for k in required):
-        return jsonify({"ошибка": "Отсутствуют оязательные поля"}), 400
+        return jsonify({"ошибка": "Отсутствуют обязательные поля"}), 400
 
     #### проверка уеникальности корабляя
     if find_spaceship(data['spaceship_id']):
@@ -101,7 +101,7 @@ def delete_spaceship(ship_id):
             mission.spaceships.remove(ship)
 
     spaceships.remove(ship)
-    return jsonify({"собщение": "Данные о корабле удалены"}), 200
+    return jsonify({"сообщение": "Данные о корабле удалены"}), 200
 
 #============================ МИССИИ ============================
 ###возвращает список всех миссий
@@ -110,12 +110,12 @@ def get_missionas():
     return jsonify([s.to_dict()for s in missions]), 200
 
 ###добавляет новую миссию
-app.route('/api/v1/missions', methods=['POST'])
+@app.route('/api/v1/missions', methods=['POST'])
 def create_mission():
     data = request.get_json()
     required = ['mission_id', 'name', 'goal']
     if not all(k in data for k in required):
-        return jsonify({"ошибка": "Отсутствуют оязательные поля"}), 400
+        return jsonify({"ошибка": "Отсутствуют обязательные поля"}), 400
 
     #### проверка уеникальности корабляя
     if find_mission(data['mission_id']):
@@ -140,7 +140,7 @@ def update_mission(mission_id):
     data = request.get_json()
     required = ['name', 'goal', 'status']
     if not all(k in data for k in required):
-        return jsonify({"ошибка": "Отсутствуют оязательные поля"}), 400
+        return jsonify({"ошибка": "Отсутствуют обязательные поля"}), 400
 
     mission.name = data['name']
     mission.goal = data['goal']
@@ -170,7 +170,7 @@ def delete_mission(mission_id):
         return jsonify({"ошибка": "Миссия не найдена"}), 404
 
     missions.remove(mission)
-    return jsonify({"собщение": "Миссия удалена"}), 200
+    return jsonify({"сообщение": "Миссия удалена"}), 200
 
 ###добваление корабля к миссии
 @app.route('/api/v1/missions/<mission_id>/spaceships/<ship_id>', methods=['POST'])
@@ -188,7 +188,7 @@ def add_spaceship_to_mission(mission_id, ship_id):
 
     mission.add_spaceship(ship)
     ship.update_status("в миссии")
-    return jsonify({"сощение": "Корабль добавлен в миссию"}), 200
+    return jsonify({"сообщение": "Корабль добавлен в миссию"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
